@@ -1,7 +1,7 @@
 /*
-* AUTOR: Paulo Pocinho
-* DESDE: 05-03-2017
-*/
+ * AUTOR: Paulo Pocinho
+ * DESDE: 05-03-2017
+ */
 
 #pragma once
 class Musica

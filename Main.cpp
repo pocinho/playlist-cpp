@@ -274,18 +274,22 @@ void GerarDadosTeste(Player& player)
 {
 	for (int i = 0; i < 7; ++i)
 	{
-		string nome = "Teste ";
-		player.AdicionarPlaylist(nome);
+		stringstream nome;
+		nome << "Teste " << i;
+		player.AdicionarPlaylist(nome.str());
 		for (int m = 0; m < 10; ++m)
 		{
-			string titulo = "Titulo ";
-			string autor = "Autor ";
-			string estilo = "Estilo ";
+			stringstream titulo;
+			titulo << "Titulo " << i << " - " << m;
+			stringstream autor;
+			autor << "Autor " << i << " - " << m;
+			stringstream estilo;
+			estilo << "Estilo " << i << " - " << m;
 			int ano = 2017;
 			double duracao = 3.33;
-			player.AdicionarMusica(i, Musica(titulo, autor, estilo, ano, duracao));
-
+			player.AdicionarMusica(i, Musica(titulo.str(), autor.str(), estilo.str(), ano, duracao));
 		}
 	}
+	cout << "Dados de teste introduzidos.\n";
 	pausa();
 }

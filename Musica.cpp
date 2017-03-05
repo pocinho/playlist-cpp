@@ -1,7 +1,7 @@
 /*
-* AUTOR: Paulo Pocinho
-* DESDE: 05-03-2017
-*/
+ * AUTOR: Paulo Pocinho
+ * DESDE: 05-03-2017
+ */
 
 #include <string>
 #include "Musica.h"
@@ -12,7 +12,6 @@ Musica::Musica(std::string titulo, std::string autor, std::string estilo, int an
 	titulo_(titulo), autor_(autor), estilo_(estilo), ano_(ano), duracao_(duracao)
 {
 }
-
 
 Musica::~Musica()
 {

@@ -1,7 +1,7 @@
 /*
-* AUTOR: Paulo Pocinho
-* DESDE: 05-03-2017
-*/
+ * AUTOR: Paulo Pocinho
+ * DESDE: 05-03-2017
+ */
 
 #include <sstream>
 #include <string>
@@ -14,9 +14,7 @@ using namespace std;
 
 Player::Player()
 {
-	lista_.reserve(5);
 }
-
 
 Player::~Player()
 {
@@ -55,14 +53,13 @@ void Player::ReordenarPlaylist(int playlist, int musica_origem, int musica_desti
 
 std::string Player::ListarPlaylists()
 {
-	stringstream lista_ss;
-	lista_ss << "\nPlaylists Disponiveis:\n";
+	stringstream lista;
+	lista << "\nPlaylists disponiveis:\n\n";
 	for (std::vector<int>::size_type i = 0; i < lista_.size(); ++i)
 	{
-		lista_ss << i << ". " << lista_[i].GetNome() << "\n";
+		lista << i << ". " << lista_[i].GetNome() << "\n";
 	}
-	string lista = lista_ss.str();
-	return lista;
+	return lista.str();
 }
 
 std::string Player::ListarMusicas(int playlist)
@@ -72,18 +69,20 @@ std::string Player::ListarMusicas(int playlist)
 
 std::string Player::ConsultarPlaylist(int posicao)
 {
-	stringstream consulta_ss;
-	consulta_ss << posicao << ". Playlist " << lista_[posicao].GetNome() << "\n";
-	consulta_ss << lista_[posicao].Listar();
-	consulta_ss << "Total Musicas: " << lista_[posicao].GetTotalMusicas() << "\n";
-	consulta_ss << "Capacidade: " << lista_[posicao].GetCapacidade() << "\n";
-	string consulta = consulta_ss.str();
-	return consulta;
+	stringstream consulta;
+	consulta << "\n(" << posicao << ") Playlist " << lista_[posicao].GetNome() << "\n\n";
+	consulta << lista_[posicao].Listar();
+	consulta << "\nTotal Musicas: " << lista_[posicao].GetTotalMusicas() << "\n";
+	consulta << "Capacidade: " << lista_[posicao].GetCapacidade() << "\n";
+	return consulta.str();
 }
 
 std::string Player::ConsultarMusica(int playlist, int musica)
 {
-	return lista_[playlist].Consultar(musica);
+	stringstream consulta;
+	consulta << "\n(" << playlist << ") Playlist " << lista_[playlist].GetNome() << "\n\n";
+	consulta << lista_[playlist].Consultar(musica);
+	return consulta.str();
 }
 
 void Player::AlterarPlaylist(int playlist, std::string nome)

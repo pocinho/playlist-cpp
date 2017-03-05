@@ -1,7 +1,7 @@
 /*
-* AUTOR: Paulo Pocinho
-* DESDE: 05-03-2017
-*/
+ * AUTOR: Paulo Pocinho
+ * DESDE: 05-03-2017
+ */
 
 #include <sstream>
 #include <string>
@@ -11,12 +11,9 @@
 
 using namespace std;
 
-
 Playlist::Playlist(std::string nome) : nome_(nome)
 {
-	lista_.reserve(5);
 }
-
 
 Playlist::~Playlist()
 {
@@ -46,25 +43,24 @@ Musica Playlist::GetMusica(int posicao)
 
 std::string Playlist::Listar()
 {
-	stringstream lista_ss;
+	stringstream lista;
 	for (std::vector<int>::size_type i = 0; i < lista_.size(); ++i)
 	{
-		lista_ss << i << ". " << lista_[i].GetTitulo() << "\n";
+		lista << i << ". " << lista_[i].GetTitulo() << "\n";
 	}
-	string lista = lista_ss.str();
-	return lista;
+	return lista.str();
 }
 
 std::string Playlist::Consultar(int posicao)
 {
-	stringstream consulta_ss;
-	consulta_ss << posicao << ". Titulo: " << lista_[posicao].GetTitulo() << "\n";
-	consulta_ss << "Autor: " << lista_[posicao].GetAutor() << "\n";
-	consulta_ss << "Estilo: " << lista_[posicao].GetEstilo() << "\n";
-	consulta_ss << "Ano: " << lista_[posicao].GetAno() << "\n";
-	consulta_ss << "Duração: " << lista_[posicao].GetDuracao() << "\n";
-	string consulta = consulta_ss.str();
-	return consulta;
+	stringstream consulta;
+	consulta << posicao << ". " << lista_[posicao].GetTitulo() << "\n";
+	consulta << "\nTitulo: " << lista_[posicao].GetTitulo() << "\n";
+	consulta << "Autor: " << lista_[posicao].GetAutor() << "\n";
+	consulta << "Estilo: " << lista_[posicao].GetEstilo() << "\n";
+	consulta << "Ano: " << lista_[posicao].GetAno() << "\n";
+	consulta << "Duração: " << lista_[posicao].GetDuracao() << "\n";
+	return consulta.str();
 }
 
 std::string Playlist::GetNome()
