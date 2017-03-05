@@ -1,8 +1,9 @@
 /*
-* AUTOR: Paulo Pocinho
-* DESDE: 05-03-2017
-*/
+ * AUTOR: Paulo Pocinho
+ * DESDE: 05-03-2017
+ */
 
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -14,9 +15,7 @@ using namespace std;
 
 Player::Player()
 {
-	lista_.reserve(5);
 }
-
 
 Player::~Player()
 {
@@ -29,69 +28,181 @@ void Player::AdicionarPlaylist(std::string nome)
 
 void Player::AdicionarMusica(int playlist, Musica musica)
 {
-	lista_[playlist].Adicionar(musica);
+	vector<int>::size_type pos = playlist - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+	}
+	else
+	{
+		lista_[pos].Adicionar(musica);
+	}
 }
 
 void Player::RemoverPlaylist(int posicao)
 {
-	lista_.erase(lista_.begin() + posicao);
+	vector<int>::size_type pos = posicao - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << posicao << ".\n";
+	}
+	else
+	{
+		lista_.erase(lista_.begin() + pos);
+	}
 }
 
 void Player::RemoverMusica(int playlist, int musica)
 {
-	lista_[playlist].Remover(musica);
+	vector<int>::size_type pos = playlist - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+	}
+	else if (!lista_[pos].HasObject(musica))
+	{
+		cout << "Nao e possivel encontrar a musica " << musica << " na playlist " << playlist << ".\n";
+	}
+	else
+	{
+		lista_[playlist].Remover(musica);
+	}
 }
 
 void Player::AlocarMusica(int playlist_origem, int musica, int playlist_destino)
 {
-	lista_[playlist_destino].Adicionar(lista_[playlist_origem].GetMusica(musica));
-	lista_[playlist_origem].Remover(musica);
+	vector<int>::size_type pos_origem = playlist_origem - 1;
+	vector<int>::size_type pos_destino = playlist_destino - 1;
+	if (pos_origem < 0 || pos_origem >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << playlist_origem << ".\n";
+	}
+	else if (pos_origem < 0 || pos_origem >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << playlist_origem << ".\n"; 
+	}
+	else if (!lista_[pos_origem].HasObject(musica))
+	{
+		cout << "Nao e possivel encontrar a musica " << musica << " na playlist " << playlist_origem << ".\n";
+	}
+	else
+	{
+		lista_[pos_destino].Adicionar(lista_[pos_origem].GetMusica(musica));
+		lista_[pos_origem].Remover(musica);
+	}
 }
 
 void Player::ReordenarPlaylist(int playlist, int musica_origem, int musica_destino)
 {
-	lista_[playlist].Reordenar(musica_origem, musica_destino);
+	vector<int>::size_type pos = playlist - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+	}
+	else if (!lista_[pos].HasObject(musica_origem))
+	{
+		cout << "Nao e possivel encontrar a musica " << musica_origem << " na playlist " << playlist << ".\n";
+	}
+	else if (!lista_[pos].HasObject(musica_destino))
+	{
+		cout << "Nao e possivel encontrar a musica " << musica_destino << " na playlist " << playlist << ".\n";
+	}
+	else
+	{
+		lista_[pos].Reordenar(musica_origem, musica_destino);
+	}
 }
 
 std::string Player::ListarPlaylists()
 {
-	stringstream lista_ss;
-	lista_ss << "\nPlaylists Disponiveis:\n";
+	stringstream lista;
+	lista << "\nPlaylists disponiveis:\n\n";
 	for (std::vector<int>::size_type i = 0; i < lista_.size(); ++i)
 	{
-		lista_ss << i << ". " << lista_[i].GetNome() << "\n";
+		lista << (i + 1) << ". " << lista_[i].GetNome() << "\n";
 	}
-	string lista = lista_ss.str();
-	return lista;
+	return lista.str();
 }
 
 std::string Player::ListarMusicas(int playlist)
 {
-	return lista_[playlist].Listar();
+	stringstream lista;
+	vector<int>::size_type pos = playlist - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		lista << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+	}
+	else
+	{
+		lista << lista_[pos].Listar();
+	}
+	return lista.str();
 }
 
 std::string Player::ConsultarPlaylist(int posicao)
 {
-	stringstream consulta_ss;
-	consulta_ss << posicao << ". Playlist " << lista_[posicao].GetNome() << "\n";
-	consulta_ss << lista_[posicao].Listar();
-	consulta_ss << "Total Musicas: " << lista_[posicao].GetTotalMusicas() << "\n";
-	consulta_ss << "Capacidade: " << lista_[posicao].GetCapacidade() << "\n";
-	string consulta = consulta_ss.str();
-	return consulta;
+	stringstream consulta;
+	vector<int>::size_type pos = posicao - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		consulta << "Nao e possivel encontrar a playlist " << posicao << ".\n";
+	}
+	else
+	{
+		consulta << "\n(" << posicao << ") Playlist " << lista_[pos].GetNome() << "\n\n";
+		consulta << lista_[pos].Listar();
+		consulta << "\nTotal Musicas: " << lista_[pos].GetTotalMusicas() << "\n";
+		consulta << "Capacidade: " << lista_[pos].GetCapacidade() << "\n";
+	}
+	return consulta.str();
 }
 
 std::string Player::ConsultarMusica(int playlist, int musica)
 {
-	return lista_[playlist].Consultar(musica);
+	stringstream consulta;
+	vector<int>::size_type pos = playlist - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		consulta << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+	}
+	else if (!lista_[pos].HasObject(musica))
+	{
+		consulta << "Nao e possivel encontrar a musica " << musica << " na playlist " << playlist << ".\n";
+	}
+	else
+	{
+		consulta << "\n(" << playlist << ") Playlist " << lista_[pos].GetNome() << "\n\n";
+		consulta << lista_[pos].Consultar(musica);
+	}
+	return consulta.str();
 }
 
 void Player::AlterarPlaylist(int playlist, std::string nome)
 {
-	lista_[playlist].SetNome(nome);
+	vector<int>::size_type pos = playlist - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+	}
+	else
+	{
+		lista_[pos].SetNome(nome);
+	}
 }
 
 void Player::AlterarMusica(int playlist, int posicao, Musica musica)
 {
-	lista_[playlist].AlterarMusica(posicao, musica);
+	vector<int>::size_type pos = playlist - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+	}
+	else if (!lista_[pos].HasObject(posicao))
+	{
+		cout << "Nao e possivel encontrar a musica " << posicao << " na playlist " << playlist << ".\n";
+	}
+	else
+	{
+		lista_[pos].AlterarMusica(posicao, musica);
+	}
 }
