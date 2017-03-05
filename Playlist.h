@@ -26,6 +26,7 @@ public:
 	std::vector<int>::size_type GetCapacidade();
 	void SetNome(std::string nome);
 	void AlterarMusica(int posicao, Musica musica);
+	bool HasObject(int musica);
 
 private:
 	std::string nome_;

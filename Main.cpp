@@ -272,12 +272,12 @@ void pausa()
 
 void GerarDadosTeste(Player& player)
 {
-	for (int i = 0; i < 7; ++i)
+	for (int i = 1; i < 7; ++i)
 	{
 		stringstream nome;
 		nome << "Teste " << i;
 		player.AdicionarPlaylist(nome.str());
-		for (int m = 0; m < 10; ++m)
+		for (int m = 1; m < 10; ++m)
 		{
 			stringstream titulo;
 			titulo << "Titulo " << i << " - " << m;
