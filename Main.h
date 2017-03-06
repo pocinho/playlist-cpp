@@ -22,7 +22,7 @@ void AlterarPlaylist(Player& player);
 void AlterarMusica(Player& player);
 void ReordenarPlaylist(Player& player);
 void AlocarMusica(Player& player);
-void pausa();
+void Pausa();
 void GerarDadosTeste(Player& player);
 
 #endif // !PLAYLIST_CPP_MAIN_H_

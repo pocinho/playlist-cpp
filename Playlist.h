@@ -20,17 +20,17 @@ public:
 	virtual ~Playlist();
 
 	void Adicionar(Musica musica);
-	void Remover(int posicao);
-	void Reordenar(int origem, int destino);
-	Musica GetMusica(int posicao);
+	void Remover(std::vector<int>::size_type posicao);
+	void Reordenar(std::vector<int>::size_type origem, std::vector<int>::size_type destino);
+	Musica GetMusica(std::vector<int>::size_type posicao);
 	std::string Listar();
-	std::string Consultar(int posicao);
+	std::string Consultar(std::vector<int>::size_type posicao);
 	std::string GetNome();
 	std::vector<int>::size_type GetTotalMusicas();
 	std::vector<int>::size_type GetCapacidade();
 	void SetNome(std::string nome);
-	void AlterarMusica(int posicao, Musica musica);
-	bool HasObject(int musica);
+	void AlterarMusica(std::vector<int>::size_type posicao, Musica musica);
+	bool HasObject(std::vector<int>::size_type musica);
 
 private:
 	std::string nome_;

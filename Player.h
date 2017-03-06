@@ -20,17 +20,17 @@ public:
 	virtual ~Player();
 
 	void AdicionarPlaylist(std::string nome);
-	void AdicionarMusica(int playlist, Musica musica);
-	void RemoverPlaylist(int posicao);
-	void RemoverMusica(int playlist, int musica);
-	void AlocarMusica(int playlist_origem, int musica, int playlist_destino);
-	void ReordenarPlaylist(int playlist, int musica_origem, int musica_destino);
+	void AdicionarMusica(std::vector<int>::size_type playlist, Musica musica);
+	void RemoverPlaylist(std::vector<int>::size_type posicao);
+	void RemoverMusica(std::vector<int>::size_type playlist, std::vector<int>::size_type musica);
+	void AlocarMusica(std::vector<int>::size_type playlist_origem, std::vector<int>::size_type musica, std::vector<int>::size_type playlist_destino);
+	void ReordenarPlaylist(std::vector<int>::size_type playlist, std::vector<int>::size_type musica_origem, std::vector<int>::size_type musica_destino);
 	std::string ListarPlaylists();
-	std::string ListarMusicas(int playlist);
-	std::string ConsultarPlaylist(int posicao);
-	std::string ConsultarMusica(int playlist, int musica);
-	void AlterarPlaylist(int playlist, std::string nome);
-	void AlterarMusica(int playlist, int posicao, Musica musica);
+	std::string ListarMusicas(std::vector<int>::size_type playlist);
+	std::string ConsultarPlaylist(std::vector<int>::size_type posicao);
+	std::string ConsultarMusica(std::vector<int>::size_type playlist, std::vector<int>::size_type musica);
+	void AlterarPlaylist(std::vector<int>::size_type playlist, std::string nome);
+	void AlterarMusica(std::vector<int>::size_type playlist, std::vector<int>::size_type posicao, Musica musica);
 
 private:
 	std::vector<Playlist> lista_;
