@@ -3,8 +3,12 @@
  * DESDE: 05-03-2017
  */
 
+#ifndef PLAYLIST_CPP_PLAYLIST_H_
+#define PLAYLIST_CPP_PLAYLIST_H_
+
 #pragma once
 
+#include <string>
 #include <vector>
 #include "Musica.h"
 
@@ -33,3 +37,4 @@ private:
 	std::vector<Musica> lista_;
 };
 
+#endif // !PLAYLIST_CPP_PLAYLIST_H_
