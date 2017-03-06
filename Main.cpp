@@ -8,59 +8,61 @@
 #include <sstream>
 #include <iostream>
 #include "Main.h"
-
+#include "Musica.h"
+#include "Player.h"
+#include "Playlist.h"
 
 using namespace std;
 
 int main()
 {
-	Player player;
+	Player MusicPlayer;
 
 	int opcao = 0;
 
 	do
 	{
-		escreve_menu();
+		Menu();
 		cin >> opcao;
 		cin.ignore();
 
 		switch (opcao)
 		{
 		case 1:
-			CriarPlaylist(player);
+			CriarPlaylist(MusicPlayer);
 			break;
 		case 2:
-			CriarMusica(player);
+			CriarMusica(MusicPlayer);
 			break;
 		case 3:
-			RemoverPlaylist(player);
+			RemoverPlaylist(MusicPlayer);
 			break;
 		case 4:
-			RemoverMusica(player);
+			RemoverMusica(MusicPlayer);
 			break;
 		case 5:
-			ListarPlaylists(player);
+			ListarPlaylists(MusicPlayer);
 			break;
 		case 6:
-			ConsultarPlaylist(player);
+			ConsultarPlaylist(MusicPlayer);
 			break;
 		case 7:
-			ConsultarMusica(player);
+			ConsultarMusica(MusicPlayer);
 			break;
 		case 8:
-			AlterarPlaylist(player);
+			AlterarPlaylist(MusicPlayer);
 			break;
 		case 9:
-			AlterarMusica(player);
+			AlterarMusica(MusicPlayer);
 			break;
 		case 10:
-			ReordenarPlaylist(player);
+			ReordenarPlaylist(MusicPlayer);
 			break;
 		case 11:
-			AlocarMusica(player);
+			AlocarMusica(MusicPlayer);
 			break;
 		case 12:
-			GerarDadosTeste(player);
+			GerarDadosTeste(MusicPlayer);
 			break;
 		case 0:
 			cout << "Adeus, volte sempre!\n";
@@ -75,7 +77,7 @@ int main()
 	return 0;
 }
 
-void escreve_menu()
+void Menu()
 {
 	cout << "Opções disponiveis:\n";
 	cout << " (1) Criar playlist\n";

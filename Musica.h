@@ -3,7 +3,13 @@
  * DESDE: 05-03-2017
  */
 
+#ifndef PLAYLIST_CPP_MUSICA_H_
+#define PLAYLIST_CPP_MUSICA_H_
+
 #pragma once
+
+#include <string>
+
 class Musica
 {
 public:
@@ -25,3 +31,4 @@ private:
 	double duracao_;
 };
 
+#endif // !PLAYLIST_CPP_MUSICA_H_

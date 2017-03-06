@@ -3,13 +3,14 @@
  * DESDE: 05-03-2017
  */
 
+#ifndef PLAYLIST_CPP_MAIN_H_
+#define	PLAYLIST_CPP_MAIN_H_
+
 #pragma once
 
-#include "Musica.h"
 #include "Player.h"
-#include "Playlist.h"
 
-void escreve_menu();
+void Menu();
 void CriarPlaylist(Player& player);
 void CriarMusica(Player& player);
 void RemoverPlaylist(Player& player);
@@ -23,3 +24,5 @@ void ReordenarPlaylist(Player& player);
 void AlocarMusica(Player& player);
 void pausa();
 void GerarDadosTeste(Player& player);
+
+#endif // !PLAYLIST_CPP_MAIN_H_
