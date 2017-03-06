@@ -11,6 +11,8 @@
 
 using namespace std;
 
+typedef std::vector<int>::size_type VecInt;
+
 Playlist::Playlist(std::string nome) : nome_(nome)
 {
 }
@@ -24,40 +26,40 @@ void Playlist::Adicionar(Musica musica)
 	lista_.push_back(musica);
 }
 
-void Playlist::Remover(int posicao)
+void Playlist::Remover(VecInt posicao)
 {
-	vector<int>::size_type pos = posicao - 1;
+	VecInt pos = posicao - 1;
 	lista_.erase(lista_.begin() + pos);
 }
 
-void Playlist::Reordenar(int origem, int destino)
+void Playlist::Reordenar(VecInt origem, VecInt destino)
 {
-	vector<int>::size_type pos_origem = origem - 1;
-	vector<int>::size_type pos_destino = destino - 1;
+	VecInt pos_origem = origem - 1;
+	VecInt pos_destino = destino - 1;
 	Musica musica = lista_[pos_origem];
 	lista_[pos_origem] = lista_[pos_destino];
 	lista_[pos_destino] = musica;
 }
 
-Musica Playlist::GetMusica(int posicao)
+Musica Playlist::GetMusica(VecInt posicao)
 {
-	vector<int>::size_type pos = posicao - 1;
+	VecInt pos = posicao - 1;
 	return lista_[pos];
 }
 
-std::string Playlist::Listar()
+string Playlist::Listar()
 {
 	stringstream lista;
-	for (std::vector<int>::size_type i = 0; i < lista_.size(); ++i)
+	for (VecInt i = 0; i < lista_.size(); ++i)
 	{
 		lista << (i + 1) << ". " << lista_[i].GetTitulo() << "\n";
 	}
 	return lista.str();
 }
 
-std::string Playlist::Consultar(int posicao)
+string Playlist::Consultar(VecInt posicao)
 {
-	vector<int>::size_type pos = posicao - 1;
+	VecInt pos = posicao - 1;
 	stringstream consulta;
 	consulta << posicao << ". " << lista_[pos].GetTitulo() << "\n";
 	consulta << "\nTitulo: " << lista_[pos].GetTitulo() << "\n";
@@ -68,17 +70,17 @@ std::string Playlist::Consultar(int posicao)
 	return consulta.str();
 }
 
-std::string Playlist::GetNome()
+string Playlist::GetNome()
 {
 	return nome_;
 }
 
-std::vector<int>::size_type Playlist::GetTotalMusicas()
+VecInt Playlist::GetTotalMusicas()
 {
 	return lista_.size();
 }
 
-std::vector<int>::size_type Playlist::GetCapacidade()
+VecInt Playlist::GetCapacidade()
 {
 	return lista_.capacity();
 }
@@ -88,15 +90,15 @@ void Playlist::SetNome(std::string nome)
 	nome_ = nome;
 }
 
-void Playlist::AlterarMusica(int posicao, Musica musica)
+void Playlist::AlterarMusica(VecInt posicao, Musica musica)
 {
-	vector<int>::size_type pos = posicao - 1;
+	VecInt pos = posicao - 1;
 	lista_[pos] = musica;
 }
 
-bool Playlist::HasObject(int musica)
+bool Playlist::HasObject(VecInt musica)
 {
-	vector<int>::size_type pos = musica - 1;
+	VecInt pos = musica - 1;
 	if (pos >= 0 && pos < lista_.size())
 		return true;
 	return false;

@@ -13,6 +13,8 @@
 
 using namespace std;
 
+typedef std::vector<int>::size_type VecInt;
+
 Player::Player()
 {
 }
@@ -26,9 +28,9 @@ void Player::AdicionarPlaylist(std::string nome)
 	lista_.push_back(Playlist(nome));
 }
 
-void Player::AdicionarMusica(int playlist, Musica musica)
+void Player::AdicionarMusica(VecInt playlist, Musica musica)
 {
-	vector<int>::size_type pos = playlist - 1;
+	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
@@ -39,9 +41,9 @@ void Player::AdicionarMusica(int playlist, Musica musica)
 	}
 }
 
-void Player::RemoverPlaylist(int posicao)
+void Player::RemoverPlaylist(VecInt posicao)
 {
-	vector<int>::size_type pos = posicao - 1;
+	VecInt pos = posicao - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		cout << "Nao e possivel encontrar a playlist " << posicao << ".\n";
@@ -52,9 +54,9 @@ void Player::RemoverPlaylist(int posicao)
 	}
 }
 
-void Player::RemoverMusica(int playlist, int musica)
+void Player::RemoverMusica(VecInt playlist, VecInt musica)
 {
-	vector<int>::size_type pos = playlist - 1;
+	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
@@ -69,10 +71,10 @@ void Player::RemoverMusica(int playlist, int musica)
 	}
 }
 
-void Player::AlocarMusica(int playlist_origem, int musica, int playlist_destino)
+void Player::AlocarMusica(VecInt playlist_origem, VecInt musica, VecInt playlist_destino)
 {
-	vector<int>::size_type pos_origem = playlist_origem - 1;
-	vector<int>::size_type pos_destino = playlist_destino - 1;
+	VecInt pos_origem = playlist_origem - 1;
+	VecInt pos_destino = playlist_destino - 1;
 	if (pos_origem < 0 || pos_origem >= lista_.size())
 	{
 		cout << "Nao e possivel encontrar a playlist " << playlist_origem << ".\n";
@@ -92,9 +94,9 @@ void Player::AlocarMusica(int playlist_origem, int musica, int playlist_destino)
 	}
 }
 
-void Player::ReordenarPlaylist(int playlist, int musica_origem, int musica_destino)
+void Player::ReordenarPlaylist(VecInt playlist, VecInt musica_origem, VecInt musica_destino)
 {
-	vector<int>::size_type pos = playlist - 1;
+	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
@@ -117,17 +119,17 @@ std::string Player::ListarPlaylists()
 {
 	stringstream lista;
 	lista << "\nPlaylists disponiveis:\n\n";
-	for (std::vector<int>::size_type i = 0; i < lista_.size(); ++i)
+	for (VecInt i = 0; i < lista_.size(); ++i)
 	{
 		lista << (i + 1) << ". " << lista_[i].GetNome() << "\n";
 	}
 	return lista.str();
 }
 
-std::string Player::ListarMusicas(int playlist)
+std::string Player::ListarMusicas(VecInt playlist)
 {
 	stringstream lista;
-	vector<int>::size_type pos = playlist - 1;
+	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		lista << "Nao e possivel encontrar a playlist " << playlist << ".\n";
@@ -139,10 +141,10 @@ std::string Player::ListarMusicas(int playlist)
 	return lista.str();
 }
 
-std::string Player::ConsultarPlaylist(int posicao)
+std::string Player::ConsultarPlaylist(VecInt posicao)
 {
 	stringstream consulta;
-	vector<int>::size_type pos = posicao - 1;
+	VecInt pos = posicao - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		consulta << "Nao e possivel encontrar a playlist " << posicao << ".\n";
@@ -157,10 +159,10 @@ std::string Player::ConsultarPlaylist(int posicao)
 	return consulta.str();
 }
 
-std::string Player::ConsultarMusica(int playlist, int musica)
+std::string Player::ConsultarMusica(VecInt playlist, VecInt musica)
 {
 	stringstream consulta;
-	vector<int>::size_type pos = playlist - 1;
+	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		consulta << "Nao e possivel encontrar a playlist " << playlist << ".\n";
@@ -177,9 +179,9 @@ std::string Player::ConsultarMusica(int playlist, int musica)
 	return consulta.str();
 }
 
-void Player::AlterarPlaylist(int playlist, std::string nome)
+void Player::AlterarPlaylist(VecInt playlist, std::string nome)
 {
-	vector<int>::size_type pos = playlist - 1;
+	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
@@ -190,9 +192,9 @@ void Player::AlterarPlaylist(int playlist, std::string nome)
 	}
 }
 
-void Player::AlterarMusica(int playlist, int posicao, Musica musica)
+void Player::AlterarMusica(VecInt playlist, VecInt posicao, Musica musica)
 {
-	vector<int>::size_type pos = playlist - 1;
+	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
 		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";

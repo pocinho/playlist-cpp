@@ -7,12 +7,15 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <vector>
 #include "Main.h"
 #include "Musica.h"
 #include "Player.h"
 #include "Playlist.h"
 
 using namespace std;
+
+typedef std::vector<int>::size_type VecInt;
 
 int main()
 {
@@ -79,7 +82,7 @@ int main()
 
 void Menu()
 {
-	cout << "Opções disponiveis:\n";
+	cout << "Opcoes disponiveis:\n";
 	cout << " (1) Criar playlist\n";
 	cout << " (2) Criar musica\n";
 	cout << " (3) Remover playlist\n";
@@ -98,121 +101,274 @@ void Menu()
 
 void CriarPlaylist(Player& player)
 {
-	string nome = "";
+	string nome;
 	cout << "Introduza o nome da playlist:\n";
 	getline(cin, nome);
 	player.AdicionarPlaylist(nome);
-	pausa();
+	Pausa();
 }
 
 void CriarMusica(Player& player)
 {
-	int playlist;
+	VecInt playlist;
 	string titulo;
 	string autor;
 	string estilo;
 	int ano;
 	double duracao;
-	cout << "Introduza a playlist onde quer adicionar a musica:\n";
-	cin >> playlist;
+	for (;;)
+	{
+		cout << "Introduza a playlist onde quer adicionar a musica:\n";
+		if (cin >> playlist)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
+	cin.clear();
 	cin.ignore();
 	cout << "Introduza o titulo da musica:\n";
 	getline(cin, titulo);
+	cin.clear();
+	cin.ignore();
 	cout << "Introduza o autor da musica " << titulo << ":\n";
-	getline(cin, autor);	
+	getline(cin, autor);
+	cin.clear();
+	cin.ignore();
 	cout << "Introduza o estilo da musica " << titulo << ":\n";
 	getline(cin, estilo);
-	cout << "Introduza o ano da musica " << titulo << ":\n";
-	cin >> ano;
+	cin.clear();
 	cin.ignore();
-	cout << "Introduza a duracao da musica " << titulo << ":\n";
-	cin >> duracao;
+	for (;;)
+	{
+		cout << "Introduza o ano da musica " << titulo << ":\n";
+		if (cin >> ano)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
+	cin.clear();
+	cin.ignore();
+	for (;;)
+	{
+		cout << "Introduza a duracao da musica " << titulo << ":\n";
+		if (cin >> duracao)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero real positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
+	cin.clear();
 	cin.ignore();
 	player.AdicionarMusica(playlist, Musica(titulo, autor, estilo, ano, duracao));
-	pausa();
+	Pausa();
 }
 
 void RemoverPlaylist(Player & player)
 {
-	int playlist;
-	cout << "introduza o numero da playlist que quer remover:\n";
-	cin >> playlist;
+	VecInt playlist;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist que quer remover:\n";
+		if (cin >> playlist)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	player.RemoverPlaylist(playlist);
-	pausa();
+	Pausa();
 }
 
 void RemoverMusica(Player & player)
 {
-	int playlist;
-	int musica;
-	cout << "Introduza o numero da playlist:\n";
-	cin >> playlist;
+	VecInt playlist;
+	VecInt musica;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist:\n";
+		if (cin >> playlist)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
-	cout << "Introduza o numero da musica:\n";
-	cin >> musica;
+	for (;;)
+	{
+		cout << "Introduza o numero da musica:\n";
+		if (cin >> musica)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	player.RemoverMusica(playlist, musica);
-	pausa();
+	Pausa();
 }
 
 void ListarPlaylists(Player & player)
 {
 	cout << player.ListarPlaylists();
-	pausa();
+	Pausa();
 }
 
 void ConsultarPlaylist(Player & player)
 {
-	int posicao;
-	cout << "Introduza o numero da playlist:\n";
-	cin >> posicao;
+	VecInt posicao;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist:\n";
+		if (cin >> posicao)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	cout << player.ConsultarPlaylist(posicao);
-	pausa();
+	Pausa();
 }
 
 void ConsultarMusica(Player & player)
 {
-	int playlist;
-	int musica;
-	cout << "Introduza o numero da playlist:\n";
-	cin >> playlist;
+	VecInt playlist;
+	VecInt musica;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist:\n";
+		if (cin >> playlist)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
-	cout << "Introduza o numero da musica:\n";
-	cin >> musica;
+	for (;;)
+	{
+		cout << "Introduza o numero da musica:\n";
+		if (cin >> musica)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	cout << player.ConsultarMusica(playlist, musica);
-	pausa();
+	Pausa();
 }
 
 void AlterarPlaylist(Player & player)
 {
-	int playlist;
-	std::string nome;
-	cout << "Introduza o numero da playlist:\n";
-	cin >> playlist;
+	VecInt playlist;
+	string nome;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist:\n";
+		if (cin >> playlist)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	cout << "Introduza o novo nome da playlist:\n";
 	getline(cin, nome);
 	player.AlterarPlaylist(playlist, nome);
-	pausa();
+	Pausa();
 }
 
 void AlterarMusica(Player & player)
 {
-	int playlist;
-	int musica;
+	VecInt playlist;
+	VecInt musica;
 	string titulo;
 	string autor;
 	string estilo;
 	int ano;
 	double duracao;
-	cout << "Introduza o numero da playlist:\n";
-	cin >> playlist;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist:\n";
+		if (cin >> playlist)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
-	cout << "Introduza o numero da musica a alterar:\n";
-	cin >> musica;
+	for (;;)
+	{
+		cout << "Introduza o numero da musica a alterar:\n";
+		if (cin >> musica)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	cout << "Introduza o titulo da musica:\n";
 	getline(cin, titulo);
@@ -220,55 +376,152 @@ void AlterarMusica(Player & player)
 	getline(cin, autor);
 	cout << "Introduza o estilo da musica " << titulo << ":\n";
 	getline(cin, estilo);
-	cout << "Introduza o ano da musica " << titulo << ":\n";
-	cin >> ano;
+	for (;;)
+	{
+		cout << "Introduza o ano da musica " << titulo << ":\n";
+		if (cin >> ano)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
-	cout << "Introduza a duracao da musica " << titulo << ":\n";
-	cin >> duracao;
+	for (;;)
+	{
+		cout << "Introduza a duracao da musica " << titulo << ":\n";
+		if (cin >> duracao)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero real positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	player.AlterarMusica(playlist, musica, Musica(titulo, autor, estilo, ano, duracao));
-	pausa();
+	Pausa();
 }
 
 void ReordenarPlaylist(Player & player)
 {
-	int playlist;
-	int musica_origem;
-	int musica_destino;
-	cout << "Introduza o numero da playlist:\n";
-	cin >> playlist;
+	VecInt playlist;
+	VecInt musica_origem;
+	VecInt musica_destino;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist:\n";
+		if (cin >> playlist)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
-	cout << "Introduza o numero da musica origem:\n";
-	cin >> musica_origem;
+	for (;;)
+	{
+		cout << "Introduza o numero da musica origem:\n";
+		if (cin >> musica_origem)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
-	cout << "Introduza o numero da musica destino:\n";
-	cin >> musica_destino;
+	for (;;)
+	{
+		cout << "Introduza o numero da musica destino:\n";
+		if (cin >> musica_destino)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	player.ReordenarPlaylist(playlist, musica_origem, musica_destino);
-	pausa();
+	Pausa();
 }
 
 void AlocarMusica(Player & player)
 {
-	int playlist_origem;
-	int musica;
-	int playlist_destino;
-	cout << "Introduza o numero da playlist origem:\n";
-	cin >> playlist_origem;
+	VecInt playlist_origem;
+	VecInt musica;
+	VecInt playlist_destino;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist origem:\n";
+		if (cin >> playlist_origem)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
-	cout << "Introduza o numero da musica origem:\n";
-	cin >> musica;
+	for (;;)
+	{
+		cout << "Introduza o numero da musica origem:\n";
+		if (cin >> musica)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
-	cout << "Introduza o numero da playlist destino:\n";
-	cin >> playlist_destino;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist destino:\n";
+		if (cin >> playlist_destino)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
 	cin.ignore();
 	player.AlocarMusica(playlist_origem, musica, playlist_destino);
-	pausa();
+	Pausa();
 }
 
-void pausa()
+void Pausa()
 {
 	cout << "\nPrima ENTER para continuar.\n";
+	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
@@ -293,5 +546,5 @@ void GerarDadosTeste(Player& player)
 		}
 	}
 	cout << "Dados de teste introduzidos.\n";
-	pausa();
+	Pausa();
 }
