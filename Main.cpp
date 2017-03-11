@@ -124,7 +124,7 @@ void CriarMusica(Player& player)
 
 	for (;;)
 	{
-		cout << "Introduza a playlist onde quer adicionar a musica:\n";
+		cout << "Introduza o numero da playlist onde quer adicionar a musica:\n";
 		if (cin >> playlist)
 		{
 			break;
@@ -136,20 +136,13 @@ void CriarMusica(Player& player)
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
-	cin.clear();
 	cin.ignore();
 	cout << "Introduza o titulo da musica:\n";
 	getline(cin, titulo);
-	cin.clear();
-	cin.ignore();
 	cout << "Introduza o autor da musica " << titulo << ":\n";
 	getline(cin, autor);
-	cin.clear();
-	cin.ignore();
 	cout << "Introduza o estilo da musica " << titulo << ":\n";
 	getline(cin, estilo);
-	cin.clear();
-	cin.ignore();
 	for (;;)
 	{
 		cout << "Introduza o ano da musica " << titulo << ":\n";
@@ -164,7 +157,6 @@ void CriarMusica(Player& player)
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
-	cin.clear();
 	cin.ignore();
 	for (;;)
 	{
@@ -180,11 +172,9 @@ void CriarMusica(Player& player)
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
-	cin.clear();
 	cin.ignore();
 	cout << "Introduza a localizacao do ficheiro da musica " << titulo << ":\n";
 	getline(cin, ficheiro);
-	cin.ignore();
 	player.AdicionarMusica(playlist, Musica(titulo, autor, estilo, ano, duracao, ficheiro));
 	Pausa();
 }
