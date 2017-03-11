@@ -65,6 +65,9 @@ int main()
 			AlocarMusica(MusicPlayer);
 			break;
 		case 12:
+			TocarMusica(MusicPlayer);
+			break;
+		case 13:
 			GerarDadosTeste(MusicPlayer);
 			break;
 		case 0:
@@ -94,7 +97,8 @@ void Menu()
 	cout << " (9) Alterar uma musica\n";
 	cout << "(10) Reordenar playlist\n";
 	cout << "(11) Alocar musica a outra playlist\n";
-	cout << "(12) Gerar dados de teste\n";
+	cout << "(12) Tocar musica\n";
+	cout << "(13) Gerar dados de teste\n";
 	cout << " (0) Sair\n";
 	cout << "Introduza uma opcao: \n";
 }
@@ -116,6 +120,8 @@ void CriarMusica(Player& player)
 	string estilo;
 	int ano;
 	double duracao;
+	string ficheiro;
+
 	for (;;)
 	{
 		cout << "Introduza a playlist onde quer adicionar a musica:\n";
@@ -176,7 +182,10 @@ void CriarMusica(Player& player)
 	}
 	cin.clear();
 	cin.ignore();
-	player.AdicionarMusica(playlist, Musica(titulo, autor, estilo, ano, duracao));
+	cout << "Introduza a localizacao do ficheiro da musica " << titulo << ":\n";
+	getline(cin, ficheiro);
+	cin.ignore();
+	player.AdicionarMusica(playlist, Musica(titulo, autor, estilo, ano, duracao, ficheiro));
 	Pausa();
 }
 
@@ -340,6 +349,7 @@ void AlterarMusica(Player & player)
 	string estilo;
 	int ano;
 	double duracao;
+	string ficheiro;
 	for (;;)
 	{
 		cout << "Introduza o numero da playlist:\n";
@@ -406,7 +416,9 @@ void AlterarMusica(Player & player)
 		}
 	}
 	cin.ignore();
-	player.AlterarMusica(playlist, musica, Musica(titulo, autor, estilo, ano, duracao));
+	cout << "Introduza a localizacao do ficheiro da musica " << titulo << ":\n";
+	getline(cin, ficheiro);
+	player.AlterarMusica(playlist, musica, Musica(titulo, autor, estilo, ano, duracao, ficheiro));
 	Pausa();
 }
 
@@ -542,9 +554,48 @@ void GerarDadosTeste(Player& player)
 			estilo << "Estilo " << i << " - " << m;
 			int ano = 2017;
 			double duracao = 3.33;
-			player.AdicionarMusica(i, Musica(titulo.str(), autor.str(), estilo.str(), ano, duracao));
+			string ficheiro = "";
+			player.AdicionarMusica(i, Musica(titulo.str(), autor.str(), estilo.str(), ano, duracao, ficheiro));
 		}
 	}
 	cout << "Dados de teste introduzidos.\n";
+	Pausa();
+}
+
+void TocarMusica(Player & player)
+{
+	VecInt playlist;
+	VecInt posicao;
+	for (;;)
+	{
+		cout << "Introduza o numero da playlist:\n";
+		if (cin >> playlist)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
+	cin.ignore();
+	for (;;)
+	{
+		cout << "Introduza o numero da musica que quer tocar:\n";
+		if (cin >> posicao)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	}
+	cin.ignore();
+	player.TocarMusica(playlist, posicao);
 	Pausa();
 }

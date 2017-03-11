@@ -24,5 +24,6 @@ void ReordenarPlaylist(Player& player);
 void AlocarMusica(Player& player);
 void Pausa();
 void GerarDadosTeste(Player& player);
+void TocarMusica(Player& player);
 
 #endif // !PLAYLIST_CPP_MAIN_H_
