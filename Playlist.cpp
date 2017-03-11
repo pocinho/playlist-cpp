@@ -66,7 +66,8 @@ string Playlist::Consultar(VecInt posicao)
 	consulta << "Autor: " << lista_[pos].GetAutor() << "\n";
 	consulta << "Estilo: " << lista_[pos].GetEstilo() << "\n";
 	consulta << "Ano: " << lista_[pos].GetAno() << "\n";
-	consulta << "Duração: " << lista_[pos].GetDuracao() << "\n";
+	consulta << "Duracao: " << lista_[pos].GetDuracao() << "\n";
+	consulta << "Ficheiro: " << lista_[pos].GetFicheiro() << "\n";
 	return consulta.str();
 }
 
@@ -88,6 +89,12 @@ VecInt Playlist::GetCapacidade()
 void Playlist::SetNome(std::string nome)
 {
 	nome_ = nome;
+}
+
+std::string Playlist::GetFicheiro(std::vector<int>::size_type posicao)
+{
+	VecInt pos = posicao - 1;
+	return lista_[pos].GetFicheiro();
 }
 
 void Playlist::AlterarMusica(VecInt posicao, Musica musica)

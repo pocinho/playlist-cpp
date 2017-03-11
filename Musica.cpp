@@ -8,8 +8,8 @@
 
 using namespace std;
 
-Musica::Musica(std::string titulo, std::string autor, std::string estilo, int ano, double duracao) :
-	titulo_(titulo), autor_(autor), estilo_(estilo), ano_(ano), duracao_(duracao)
+Musica::Musica(std::string titulo, std::string autor, std::string estilo, int ano, double duracao, std::string ficheiro) :
+	titulo_(titulo), autor_(autor), estilo_(estilo), ano_(ano), duracao_(duracao), ficheiro_(ficheiro)
 {
 }
 
@@ -40,4 +40,9 @@ int Musica::GetAno()
 double Musica::GetDuracao()
 {
 	return duracao_;
+}
+
+std::string Musica::GetFicheiro()
+{
+	return ficheiro_;
 }

@@ -3,6 +3,8 @@
  * DESDE: 05-03-2017
  */
 
+#include <shlwapi.h>
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -206,5 +208,28 @@ void Player::AlterarMusica(VecInt playlist, VecInt posicao, Musica musica)
 	else
 	{
 		lista_[pos].AlterarMusica(posicao, musica);
+	}
+}
+
+void Player::TocarMusica(std::vector<int>::size_type playlist, std::vector<int>::size_type posicao)
+{
+	VecInt pos = playlist - 1;
+	if (pos < 0 || pos >= lista_.size())
+	{
+		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+	}
+	else if (!lista_[pos].HasObject(posicao))
+	{
+		cout << "Nao e possivel encontrar a musica " << posicao << " na playlist " << playlist << ".\n";
+	}
+	else
+	{
+		string file = lista_[pos].GetFicheiro(posicao);
+#ifdef UNICODE
+		wstring file_ws(file.begin(), file.end());
+		ShellExecute(NULL, L"open", file_ws.c_str(), NULL, NULL, SW_SHOW);
+#else
+		ShellExecute(NULL, L"open", file.c_str(), NULL, NULL, SW_SHOW);
+#endif
 	}
 }

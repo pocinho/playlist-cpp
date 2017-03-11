@@ -31,6 +31,7 @@ public:
 	std::string ConsultarMusica(std::vector<int>::size_type playlist, std::vector<int>::size_type musica);
 	void AlterarPlaylist(std::vector<int>::size_type playlist, std::string nome);
 	void AlterarMusica(std::vector<int>::size_type playlist, std::vector<int>::size_type posicao, Musica musica);
+	void TocarMusica(std::vector<int>::size_type playlist, std::vector<int>::size_type posicao);
 
 private:
 	std::vector<Playlist> lista_;

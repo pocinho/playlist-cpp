@@ -31,6 +31,7 @@ public:
 	void SetNome(std::string nome);
 	void AlterarMusica(std::vector<int>::size_type posicao, Musica musica);
 	bool HasObject(std::vector<int>::size_type musica);
+	std::string GetFicheiro(std::vector<int>::size_type posicao);
 
 private:
 	std::string nome_;

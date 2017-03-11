@@ -14,7 +14,7 @@ class Musica
 {
 public:
 	Musica() = delete;
-	Musica(std::string titulo, std::string autor, std::string estilo, int ano, double duracao);
+	Musica(std::string titulo, std::string autor, std::string estilo, int ano, double duracao, std::string ficheiro);
 	virtual ~Musica();
 
 	std::string GetTitulo();
@@ -22,6 +22,7 @@ public:
 	std::string GetEstilo();
 	int GetAno();
 	double GetDuracao();
+	std::string GetFicheiro();
 
 private:
 	std::string titulo_;
@@ -29,6 +30,7 @@ private:
 	std::string estilo_;
 	int ano_;
 	double duracao_;
+	std::string ficheiro_;
 };
 
 #endif // !PLAYLIST_CPP_MUSICA_H_
