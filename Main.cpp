@@ -1,4 +1,4 @@
-/*
+﻿/*
  * AUTOR: Paulo Pocinho
  * DESDE: 05-03-2017
  */
@@ -8,20 +8,77 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+
+#define NOMINMAX
+#include <Windows.h>
+
+#include <SQLiteCpp/SQLiteCpp.h>
+
 #include "Main.h"
 #include "Musica.h"
 #include "Player.h"
 #include "Playlist.h"
 
 using namespace std;
+using namespace SQLite;
 
 typedef std::vector<int>::size_type VecInt;
 
 int main()
 {
+	string db_name = "Playlist.db";
 	Player MusicPlayer;
-
 	int opcao = 0;
+
+	// Configurar a consola para aceitar caracteres latinos / europa ocidental:
+	SetConsoleOutputCP(1252);
+
+	cout << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")" << endl;
+	cout << "SQliteC++ version " << SQLITECPP_VERSION << endl;
+
+	////////////////////////////////////////////////////////////////////////////
+	// Simple batch queries example :
+	try
+	{
+		// Open a database file in create/write mode
+		SQLite::Database db(db_name.c_str(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		std::cout << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully\n";
+
+		// Create a new table with an explicit "id" column aliasing the underlying rowid
+		db.exec("DROP TABLE IF EXISTS test");
+		db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT)");
+
+		// first row
+		int nb = db.exec("INSERT INTO test VALUES (NULL, \"test\")");
+		std::cout << "INSERT INTO test VALUES (NULL, \"test\")\", returned " << nb << std::endl;
+
+		// second row
+		nb = db.exec("INSERT INTO test VALUES (NULL, \"second\")");
+		std::cout << "INSERT INTO test VALUES (NULL, \"second\")\", returned " << nb << std::endl;
+
+		// update the second row
+		nb = db.exec("UPDATE test SET value=\"second-updated\" WHERE id='2'");
+		std::cout << "UPDATE test SET value=\"second-updated\" WHERE id='2', returned " << nb << std::endl;
+
+		// Check the results : expect two row of result
+		SQLite::Statement   query(db, "SELECT * FROM test");
+		std::cout << "SELECT * FROM test :\n";
+		while (query.executeStep())
+		{
+			std::cout << "row (" << query.getColumn(0) << ", \"" << query.getColumn(1) << "\")\n";
+		}
+
+		db.exec("DROP TABLE test");
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "SQLite exception: " << e.what() << std::endl;
+		return EXIT_FAILURE; // unexpected error : exit the example program
+	}
+#ifdef _DEBUG
+	remove(db_name.c_str());
+#endif
+	std::cout << "Tudo bem até agora.\n";
 
 	do
 	{
@@ -67,14 +124,16 @@ int main()
 		case 12:
 			TocarMusica(MusicPlayer);
 			break;
+#ifdef _DEBUG
 		case 13:
 			GerarDadosTeste(MusicPlayer);
 			break;
+#endif
 		case 0:
 			cout << "Adeus, volte sempre!\n";
 			break;
 		default:
-			cout << "Op��o inv�lida.\n";
+			cout << "Opção inválida.\n";
 			break;
 		}
 
@@ -98,9 +157,11 @@ void Menu()
 	cout << "(10) Reordenar playlist\n";
 	cout << "(11) Alocar musica a outra playlist\n";
 	cout << "(12) Tocar musica\n";
+#ifdef _DEBUG
 	cout << "(13) Gerar dados de teste\n";
+#endif
 	cout << " (0) Sair\n";
-	cout << "Introduza uma opcao: \n";
+	cout << "Introduza uma opção: \n";
 }
 
 void CriarPlaylist(Player& player)
@@ -131,7 +192,7 @@ void CriarMusica(Player& player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -152,7 +213,7 @@ void CriarMusica(Player& player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -167,13 +228,13 @@ void CriarMusica(Player& player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero real positivo valido." << endl;
+			cout << "Por favor, introduza um numero real positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
 	cin.ignore();
-	cout << "Introduza a localizacao do ficheiro da musica " << titulo << ":\n";
+	cout << "Introduza a localização do ficheiro da musica " << titulo << ":\n";
 	getline(cin, ficheiro);
 	player.AdicionarMusica(playlist, Musica(titulo, autor, estilo, ano, duracao, ficheiro));
 	Pausa();
@@ -191,7 +252,7 @@ void RemoverPlaylist(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -214,7 +275,7 @@ void RemoverMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -229,7 +290,7 @@ void RemoverMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -257,7 +318,7 @@ void ConsultarPlaylist(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -280,7 +341,7 @@ void ConsultarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -295,7 +356,7 @@ void ConsultarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -318,7 +379,7 @@ void AlterarPlaylist(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -349,7 +410,7 @@ void AlterarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -364,7 +425,7 @@ void AlterarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -385,7 +446,7 @@ void AlterarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -400,13 +461,13 @@ void AlterarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero real positivo valido." << endl;
+			cout << "Por favor, introduza um numero real positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
 	cin.ignore();
-	cout << "Introduza a localizacao do ficheiro da musica " << titulo << ":\n";
+	cout << "Introduza a localização do ficheiro da musica " << titulo << ":\n";
 	getline(cin, ficheiro);
 	player.AlterarMusica(playlist, musica, Musica(titulo, autor, estilo, ano, duracao, ficheiro));
 	Pausa();
@@ -426,7 +487,7 @@ void ReordenarPlaylist(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -441,7 +502,7 @@ void ReordenarPlaylist(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -456,7 +517,7 @@ void ReordenarPlaylist(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -480,7 +541,7 @@ void AlocarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -495,7 +556,7 @@ void AlocarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -510,7 +571,7 @@ void AlocarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -527,6 +588,7 @@ void Pausa()
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
+#ifdef _DEBUG
 void GerarDadosTeste(Player& player)
 {
 	for (int i = 1; i < 7; ++i)
@@ -551,6 +613,7 @@ void GerarDadosTeste(Player& player)
 	cout << "Dados de teste introduzidos.\n";
 	Pausa();
 }
+#endif // _DEBUG
 
 void TocarMusica(Player & player)
 {
@@ -565,7 +628,7 @@ void TocarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -580,7 +643,7 @@ void TocarMusica(Player & player)
 		}
 		else
 		{
-			cout << "Por favor, introduza um numero inteiro positivo valido." << endl;
+			cout << "Por favor, introduza um numero inteiro positivo válido." << endl;
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
