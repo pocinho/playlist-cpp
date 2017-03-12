@@ -1,14 +1,18 @@
-/*
+﻿/*
  * AUTOR: Paulo Pocinho
  * DESDE: 05-03-2017
  */
 
-#include <shlwapi.h>
-
+#include <exception>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include <shlwapi.h>
+
+#include <SQLiteCpp/SQLiteCpp.h>
+
 #include "Musica.h"
 #include "Player.h"
 #include "Playlist.h"
@@ -17,16 +21,72 @@ using namespace std;
 
 typedef std::vector<int>::size_type VecInt;
 
-Player::Player()
+Player::Player() : db_name_("Playlist.db"), db_(db_name_.c_str(), SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE)
 {
+	InicializarDB();
 }
 
 Player::~Player()
 {
 }
 
+void Player::InicializarDB()
+{
+	try
+	{
+		if (!db_.tableExists("playlists"))
+		{
+			db_.exec("CREATE TABLE playlists (id INTEGER PRIMARY KEY, nome CHAR(50))");
+		}
+		else
+		{
+			SQLite::Statement query(db_, "SELECT nome FROM playlists");
+			while (query.executeStep())
+			{
+				const std::string nome = query.getColumn(0);
+				lista_.push_back(Playlist(nome));
+			}
+		}
+
+		if (!db_.tableExists("musicas"))
+		{
+			db_.exec("CREATE TABLE musicas (id INTEGER PRIMARY KEY, titulo CHAR(50), autor CHAR(50), estilo CHAR(50), ano INTEGER, duracao REAL, ficheiro CHAR(200), playlist INTEGER)");
+		}
+		else
+		{
+			SQLite::Statement query(db_, "SELECT titulo, autor, estilo, ano, duracao, ficheiro, playlist FROM musicas");
+			while (query.executeStep())
+			{
+				const std::string titulo   = query.getColumn(0);
+				const std::string autor    = query.getColumn(1);
+				const std::string estilo   = query.getColumn(2);
+				const int         ano      = query.getColumn(3);
+				const double      duracao  = query.getColumn(4);
+				const std::string ficheiro = query.getColumn(5);
+				const int         playlist = query.getColumn(6);
+				lista_[playlist].Adicionar(Musica(titulo, autor, estilo, ano, duracao, ficheiro));
+			}
+		}
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "Erro ao inicializar base de dados: " << e.what() << std::endl;
+	}
+
+	std::cout << "Base de dados inicializada.\n";
+}
+
 void Player::AdicionarPlaylist(std::string nome)
 {
+	try
+	{
+		string query("INSERT INTO playlists VALUES (NULL, \"" + nome + "\")");
+		db_.exec(query.c_str());
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "Erro ao guardar playlist na base de dados: " << e.what() << std::endl;
+	}
 	lista_.push_back(Playlist(nome));
 }
 
@@ -35,10 +95,33 @@ void Player::AdicionarMusica(VecInt playlist, Musica musica)
 	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a playlist " << playlist << ".\n";
 	}
 	else
 	{
+		try
+		{
+			string query = "INSERT INTO musicas VALUES (NULL, \"";
+			query += musica.GetTitulo();
+			query += "\", \"";
+			query += musica.GetAutor();
+			query += "\", \"";
+			query += musica.GetEstilo();
+			query += "\", \"";
+			query += musica.GetAno();
+			query += "\", \"";
+			query += musica.GetDuracao();
+			query += "\", \"";
+			query += musica.GetFicheiro();
+			query += "\", \"";
+			query += playlist;
+			query += "\")";
+			db_.exec(query);
+		}
+		catch (std::exception& e)
+		{
+			std::cout << "Erro ao guardar musica na base de dados: " << e.what() << std::endl;
+		}
 		lista_[pos].Adicionar(musica);
 	}
 }
@@ -48,10 +131,11 @@ void Player::RemoverPlaylist(VecInt posicao)
 	VecInt pos = posicao - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << posicao << ".\n";
+		cout << "Não é possivel encontrar a playlist " << posicao << ".\n";
 	}
 	else
 	{
+
 		lista_.erase(lista_.begin() + pos);
 	}
 }
@@ -61,11 +145,11 @@ void Player::RemoverMusica(VecInt playlist, VecInt musica)
 	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a playlist " << playlist << ".\n";
 	}
 	else if (!lista_[pos].HasObject(musica))
 	{
-		cout << "Nao e possivel encontrar a musica " << musica << " na playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a musica " << musica << " na playlist " << playlist << ".\n";
 	}
 	else
 	{
@@ -79,15 +163,15 @@ void Player::AlocarMusica(VecInt playlist_origem, VecInt musica, VecInt playlist
 	VecInt pos_destino = playlist_destino - 1;
 	if (pos_origem < 0 || pos_origem >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << playlist_origem << ".\n";
+		cout << "Não é possivel encontrar a playlist " << playlist_origem << ".\n";
 	}
 	else if (pos_origem < 0 || pos_origem >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << playlist_origem << ".\n"; 
+		cout << "Não é possivel encontrar a playlist " << playlist_origem << ".\n"; 
 	}
 	else if (!lista_[pos_origem].HasObject(musica))
 	{
-		cout << "Nao e possivel encontrar a musica " << musica << " na playlist " << playlist_origem << ".\n";
+		cout << "Não é possivel encontrar a musica " << musica << " na playlist " << playlist_origem << ".\n";
 	}
 	else
 	{
@@ -101,15 +185,15 @@ void Player::ReordenarPlaylist(VecInt playlist, VecInt musica_origem, VecInt mus
 	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a playlist " << playlist << ".\n";
 	}
 	else if (!lista_[pos].HasObject(musica_origem))
 	{
-		cout << "Nao e possivel encontrar a musica " << musica_origem << " na playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a musica " << musica_origem << " na playlist " << playlist << ".\n";
 	}
 	else if (!lista_[pos].HasObject(musica_destino))
 	{
-		cout << "Nao e possivel encontrar a musica " << musica_destino << " na playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a musica " << musica_destino << " na playlist " << playlist << ".\n";
 	}
 	else
 	{
@@ -134,7 +218,7 @@ std::string Player::ListarMusicas(VecInt playlist)
 	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		lista << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+		lista << "Não é possivel encontrar a playlist " << playlist << ".\n";
 	}
 	else
 	{
@@ -149,7 +233,7 @@ std::string Player::ConsultarPlaylist(VecInt posicao)
 	VecInt pos = posicao - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		consulta << "Nao e possivel encontrar a playlist " << posicao << ".\n";
+		consulta << "Não é possivel encontrar a playlist " << posicao << ".\n";
 	}
 	else
 	{
@@ -167,11 +251,11 @@ std::string Player::ConsultarMusica(VecInt playlist, VecInt musica)
 	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		consulta << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+		consulta << "Não é possivel encontrar a playlist " << playlist << ".\n";
 	}
 	else if (!lista_[pos].HasObject(musica))
 	{
-		consulta << "Nao e possivel encontrar a musica " << musica << " na playlist " << playlist << ".\n";
+		consulta << "Não é possivel encontrar a musica " << musica << " na playlist " << playlist << ".\n";
 	}
 	else
 	{
@@ -186,7 +270,7 @@ void Player::AlterarPlaylist(VecInt playlist, std::string nome)
 	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a playlist " << playlist << ".\n";
 	}
 	else
 	{
@@ -199,11 +283,11 @@ void Player::AlterarMusica(VecInt playlist, VecInt posicao, Musica musica)
 	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a playlist " << playlist << ".\n";
 	}
 	else if (!lista_[pos].HasObject(posicao))
 	{
-		cout << "Nao e possivel encontrar a musica " << posicao << " na playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a musica " << posicao << " na playlist " << playlist << ".\n";
 	}
 	else
 	{
@@ -216,11 +300,11 @@ void Player::TocarMusica(std::vector<int>::size_type playlist, std::vector<int>:
 	VecInt pos = playlist - 1;
 	if (pos < 0 || pos >= lista_.size())
 	{
-		cout << "Nao e possivel encontrar a playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a playlist " << playlist << ".\n";
 	}
 	else if (!lista_[pos].HasObject(posicao))
 	{
-		cout << "Nao e possivel encontrar a musica " << posicao << " na playlist " << playlist << ".\n";
+		cout << "Não é possivel encontrar a musica " << posicao << " na playlist " << playlist << ".\n";
 	}
 	else
 	{
