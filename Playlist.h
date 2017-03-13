@@ -32,6 +32,7 @@ public:
 	void AlterarMusica(std::vector<int>::size_type posicao, Musica musica);
 	bool HasObject(std::vector<int>::size_type musica);
 	std::string GetFicheiro(std::vector<int>::size_type posicao);
+	std::vector<Musica> GetLista();
 
 private:
 	std::string nome_;

@@ -10,6 +10,9 @@
 
 #include <string>
 #include <vector>
+
+#include <SQLiteCpp/SQLiteCpp.h>
+
 #include "Musica.h"
 #include "Playlist.h"
 
@@ -19,6 +22,7 @@ public:
 	Player();
 	virtual ~Player();
 
+	void InicializarDB();
 	void AdicionarPlaylist(std::string nome);
 	void AdicionarMusica(std::vector<int>::size_type playlist, Musica musica);
 	void RemoverPlaylist(std::vector<int>::size_type posicao);
@@ -35,6 +39,8 @@ public:
 
 private:
 	std::vector<Playlist> lista_;
+	std::string db_name_;
+	SQLite::Database db_;
 };
 
 #endif // !PLAYLIST_CPP_PLAYER_H_

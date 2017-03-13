@@ -97,6 +97,11 @@ std::string Playlist::GetFicheiro(std::vector<int>::size_type posicao)
 	return lista_[pos].GetFicheiro();
 }
 
+std::vector<Musica> Playlist::GetLista()
+{
+	return lista_;
+}
+
 void Playlist::AlterarMusica(VecInt posicao, Musica musica)
 {
 	VecInt pos = posicao - 1;
