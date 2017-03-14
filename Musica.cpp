@@ -1,9 +1,18 @@
 /*
- * AUTOR: Paulo Pocinho
- * DESDE: 05-03-2017
+ *  File:       Playlist\Musica.cpp
+ *
+ *  Abstract:   Class Musica stores music information.
+ *
+ *  Created:    2017-03-05 by Paulo Pocinho
+ *
+ *  Updated:    2017-03-13 by Paulo Pocinho
+ *
+ *  LICENSE:    Copyright (c) 2017 Paulo Pocinho
+ *              See accompanying file LICENSE.txt
  */
 
 #include <string>
+
 #include "Musica.h"
 
 using namespace std;

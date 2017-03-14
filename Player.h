@@ -1,6 +1,14 @@
 /*
- * AUTOR: Paulo Pocinho
- * DESDE: 05-03-2017
+ *  File:       Playlist\Player.h
+ *
+ *  Abstract:   Header file for the Player class.
+ *
+ *  Created:    2017-03-05 by Paulo Pocinho
+ *
+ *  Updated:    2017-03-13 by Paulo Pocinho
+ *
+ *  LICENSE:    Copyright (c) 2017 Paulo Pocinho
+ *              See accompanying file LICENSE.txt
  */
 
 #ifndef PLAYLIST_CPP_PLAYER_H_
